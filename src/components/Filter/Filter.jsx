@@ -1,10 +1,16 @@
 import { Input, Label } from './Filter.styled';
+import { useDispatch, useSelector } from "react-redux";
+import { filterContacts } from '../../redux/reducer';
+import { getFilterQuery } from '../../redux/reducer';
 
-export function Filter({value, onChange}) { 
+export function Filter() { 
+    const dispatch = useDispatch();
+    const filter = useSelector(getFilterQuery);
+
     return (
         <Label>
             Find contact by name: 
-            <Input type="text" value={value} onChange={onChange}></Input>
+            <Input type="text" value={filter} onChange={(evt)=> dispatch(filterContacts(evt.target.value))}></Input>
         </Label>
         
     )
