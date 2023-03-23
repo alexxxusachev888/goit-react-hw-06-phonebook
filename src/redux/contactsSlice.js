@@ -1,12 +1,15 @@
 import { createSlice, nanoid } from "@reduxjs/toolkit";
+import { toast } from 'react-toastify';
 
 export const contactsList = createSlice({
   name: "contacts",
   initialState: [],
   reducers: {
     addContact: {
-      reducer(state, action) {
-      state.push(action.payload)
+      reducer(state, {payload}) {
+      const isDuplicate = state.some(cnt=> {
+        return cnt.name.toLowerCase() === payload.name.toLowerCase()})
+      !isDuplicate ? state.push(payload) : toast.warn('That contact is on the list!');
     },
       prepare(name, number) {
         return {
@@ -18,8 +21,8 @@ export const contactsList = createSlice({
         }
       }
     }, 
-    deleteContact (state, action) {
-        return state.filter(({id}) => id !== action.payload);
+    deleteContact (state, {payload}) {
+        return state.filter(({id}) => id !== payload);
       },
     } 
   })
